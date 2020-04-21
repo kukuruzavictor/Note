@@ -14,7 +14,7 @@ public class NoteView {
 
     // метод для виведення масиву нотаток
     public void printNotes(Note[] note) {
-        System.out.println("––––––––––––––––––––––––––––––––––––––––––––");
+        System.out.println("–––––––––––––––––––––––––––––––-––––––––––––");
         for (int i=0; i<note.length; i++){
             if (note[i]!=null){
                 System.out.print(i+1+" | ");
@@ -97,10 +97,10 @@ public class NoteView {
 
     public boolean confirmation(Note note, int index){
         printSingleNote(note, index-1);
-        System.out.print("- THIS NOTE YOU MEAN? (Y/N): ");
+        System.out.print("- THIS NOTE YOU MEAN? (YES by default) (Y/N): ");
         Scanner sc = new Scanner(System.in);
         String confirmation = sc.nextLine();
-        if (confirmation.toLowerCase().trim().equals("y")){
+        if (confirmation.toLowerCase().trim().equals("y") || confirmation.trim().equals("")){
             return true;
         }
         return false;

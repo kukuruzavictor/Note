@@ -5,7 +5,7 @@ import ua.cluster.view.NoteView;
 
 public class NoteController {
 
-    private String[] commands = {"exit","list","search", "edit", "check", "new", "remove"};
+    private String[] commands = {"list","search", "edit", "check", "new", "remove", "user menu", "exit"};
 
     public void commandList(){
         NoteView commandList = new NoteView();

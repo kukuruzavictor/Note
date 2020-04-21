@@ -1,17 +1,14 @@
 package ua.cluster;
 
 import ua.cluster.controller.NoteController;
+import ua.cluster.controller.UserController;
 import ua.cluster.model.Note;
-import ua.cluster.view.NoteView;
-
-import java.util.Scanner;
+import ua.cluster.model.User;
+import ua.cluster.view.MainView;
 
 public class Main {
 
     public static void main(String[] args) {
-        Scanner input = new Scanner(System.in);
-        String command = "";
-
         //переписав методи всіх пакетів для обробки масиву
         // test case – змінив на масив об'єктів класу Note
         Note[] note = new Note[20];
@@ -23,23 +20,57 @@ public class Main {
         note[5] = new Note("sixth test note", "14.01.2019", true, "idea");
         note[6] = new Note("seventh test note", "14.04.2020", false, "work");
 
-        System.out.println("Hello, let`s use notes!");
+        User[] userlist = new User[5];
+        userlist[0] = new User("admin", "admin@gmail.com");
+        userlist[1] = new User("Viktor Kukuruza", "kukuruzavictor@gmail.com");
+
+        MainView menu = new MainView();
+        NoteController input = new NoteController();
+
+
+        System.out.println("Hello, let`s use NOTES!");
+
+        UserController login = new UserController();
+        while(true) {
+            if (login.logIn(userlist))
+            break;
+        }
+
+        System.out.println("AVAILABLE COMMANDS:");
+        input.commandList();
         while (true) {
-            System.out.print("INPUT COMMAND: ");
-            command = input.nextLine();
-            command = command.toLowerCase().trim();
+            String command = menu.inputCommand();
 
             switch (command) {
                 case "exit":
                     System.out.println("Buy Buy!");
                     System.exit(0);
+                case "user menu":
+                    System.out.println("USER MENU | AVAILABLE COMMANDS:");
+                    boolean usermenu = true;
+                    login.commandList();
+                    while (usermenu){
+                        command = menu.inputCommand();
+                        if ("back".equals(command)) {
+                            usermenu = false;
+                        } else {
+                            if (login.isExistingCommand(command)) {
+                                login.runCommand(command, userlist);
+                            } else {
+                                System.out.println("USER MENU | AVAILABLE COMMANDS:");
+                                login.commandList();
+                            }
+                        }
+                    }
+
+
                 default:
-                    NoteController inputStr = new NoteController();
-                    if (inputStr.isExistingCommand(command)){
-                        inputStr.runCommand(command, note);
+                    if (input.isExistingCommand(command)){
+                        input.runCommand(command, note);
                     } else {
                         System.out.println("AVAILABLE COMMANDS:");
-                        inputStr.commandList();}
+                        input.commandList();
+                    }
             }
         }
     }
