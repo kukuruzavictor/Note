@@ -5,6 +5,7 @@ import ua.cluster.model.Note;
 import java.util.Scanner;
 
 public class NoteView {
+    private Scanner sc = new Scanner(System.in);
 
     public void printCommands(String[] array){
         for (String s : array) {
@@ -46,7 +47,7 @@ public class NoteView {
         Scanner sc = new Scanner(System.in);
         try {
             int requestIndex = sc.nextInt();
-            if (requestIndex>1 && requestIndex<arrayLength+1){
+            if (requestIndex>0 && requestIndex<arrayLength+1){
                 return requestIndex;
             } else {
                 System.out.println("- WRONG INDEX");
@@ -61,18 +62,15 @@ public class NoteView {
     // метод просить ввести рядок і повертає його
     public String requestNewNote(){
         System.out.print("- NOTE TEXT: ");
-        Scanner sc = new Scanner(System.in);
         return sc.nextLine();
     }
 
     public String requestDate(){
-        Scanner sc = new Scanner(System.in);
         System.out.print("- DATE: ");
         return sc.nextLine();
     }
 
     public boolean requestChecked(){
-        Scanner sc = new Scanner(System.in);
         System.out.print("- CHECKED (1 is done): ");
         switch (sc.nextLine().trim()){
             case "1":
@@ -83,7 +81,6 @@ public class NoteView {
     }
 
     public String requestLabel(){
-        Scanner sc = new Scanner(System.in);
         System.out.print("- LABEL: ");
         return sc.nextLine();
     }
@@ -91,14 +88,12 @@ public class NoteView {
     // метод просить ввести рядок і повертає його
     public String requestKeyword(){
         System.out.print("- SEARCH KEYWORD: ");
-        Scanner sc = new Scanner(System.in);
         return sc.nextLine();
     }
 
     public boolean confirmation(Note note, int index){
         printSingleNote(note, index-1);
         System.out.print("- THIS NOTE YOU MEAN? (YES by default) (Y/N): ");
-        Scanner sc = new Scanner(System.in);
         String confirmation = sc.nextLine();
         if (confirmation.toLowerCase().trim().equals("y") || confirmation.trim().equals("")){
             return true;
@@ -114,7 +109,7 @@ public class NoteView {
         System.out.println("- NOTHING CHANGED.");
     }
 
-        public void nothingFound(){
+    public void nothingFound(){
         System.out.println("- NOTHING FOUND.");
     }
 }

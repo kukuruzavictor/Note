@@ -3,13 +3,14 @@ package ua.cluster.controller;
 import ua.cluster.model.Note;
 import ua.cluster.view.NoteView;
 
-public class NoteController {
+import java.util.Date;
 
+public class NoteController {
+    private NoteView view = new NoteView();
     private String[] commands = {"list","search", "edit", "check", "new", "remove", "user menu", "exit"};
 
     public void commandList(){
-        NoteView commandList = new NoteView();
-        commandList.printCommands(commands);
+        view.printCommands(commands);
     }
 
     public boolean isExistingCommand (String command){
@@ -44,27 +45,25 @@ public class NoteController {
     }
 
     public void listNote (Note[] note){
-        NoteView list = new NoteView();
-        list.printNotes(note);
+        view.printNotes(note);
     }
 
     // метод змінює isChecked на протилежний
     // просить ввести номер рядка
     // виводить змінений рядок з нотаткою
     public void checkNote(Note[] note) {
-        NoteView check = new NoteView();
-        int index = check.requestIndex(noteCounter(note));
+        int index = view.requestIndex(noteCounter(note));
         if (index != -1){
-            if (check.confirmation(note[index-1], index)){
+            if (view.confirmation(note[index-1], index)){
                 if (note[index-1].isChecked()){
                     note[index-1].setChecked(false);
                     } else {
                     note[index-1].setChecked(true);
                     }
-                check.printSingleNote(note[index-1], index-1);
-                check.printSuccess();
+                view.printSingleNote(note[index-1], index-1);
+                view.printSuccess();
             } else {
-                check.nothingChanged();
+                view.nothingChanged();
             }
         }
     }
@@ -73,16 +72,17 @@ public class NoteController {
     // потрібно вказати номер нотатки
     // виводить оновлений рядок з нотаткою
     public void editNote(Note[] note){
-        NoteView changeNote = new NoteView();
-        int index = changeNote.requestIndex(noteCounter(note));
+        int index = view.requestIndex(noteCounter(note));
         if (index!=-1){
-            if (changeNote.confirmation(note[index-1], index)){
-                String replace = changeNote.requestNewNote();
+            if (view.confirmation(note[index-1], index)){
+                String replace = view.requestNewNote();
                 note[index-1].setNote(replace);
-                changeNote.printSingleNote(note[index-1], index-1);
-                changeNote.printSuccess();
+                Date date = new Date();
+                note [index-1].setDate(date.toString());
+                view.printSingleNote(note[index-1], index-1);
+                view.printSuccess();
             } else {
-                changeNote.nothingChanged();
+                view.nothingChanged();
             }
         }
     }
@@ -90,48 +90,46 @@ public class NoteController {
     // метод здійснює пошук за текстом нотатки
     // виводить список знайдених нотаток
     public void searchNote(Note[] note){
-        NoteView searchNote = new NoteView();
-        String found = searchNote.requestKeyword();
+        String found = view.requestKeyword();
         int count = 0;
         for (int i=0; i<noteCounter(note); i++){
             String n = note[i].getNote();
             int index = n.indexOf(found);
             if (index >-1){
-                searchNote.printSingleNote(note[i], i);
+                view.printSingleNote(note[i], i);
                 count+=1;
             }
         }
         if (count==0){
-            searchNote.nothingFound();
+            view.nothingFound();
         }
     }
 
     public void newNote(Note[] note){
         Note newNoteObj = new Note();
-        NoteView newNote = new NoteView();
-        newNoteObj.setNote(newNote.requestNewNote());
-        newNoteObj.setDate(newNote.requestDate());
-        newNoteObj.setChecked(newNote.requestChecked());
-        newNoteObj.setLabel(newNote.requestLabel());
+        newNoteObj.setNote(view.requestNewNote());
+        newNoteObj.setChecked(view.requestChecked());
+        newNoteObj.setLabel(view.requestLabel());
+        Date date = new Date();
+        newNoteObj.setDate(date.toString());
         note[noteCounter(note)] = newNoteObj;
-        newNote.printSingleNote(note[noteCounter(note)-1], noteCounter(note)-1);
-        newNote.printSuccess();
+        view.printSingleNote(note[noteCounter(note)-1], noteCounter(note)-1);
+        view.printSuccess();
     }
 
     public void removeNote(Note[] note){
         //note[1]=null;
-        NoteView removeNote = new NoteView();
-        int index = removeNote.requestIndex(noteCounter(note));
+        int index = view.requestIndex(noteCounter(note));
         if (index!=-1){
-            if (removeNote.confirmation(note[index-1], index)){
+            if (view.confirmation(note[index-1], index)){
                 note[index-1]=null;
                 for (int i=index-1; i<noteCounter(note); i++){
                     note[i]=note[i+1];
                     }
-                removeNote.printNotes(note);
-                removeNote.printSuccess();
+                view.printNotes(note);
+                view.printSuccess();
                 } else {
-                removeNote.nothingChanged();
+                view.nothingChanged();
                 }
             }
     }

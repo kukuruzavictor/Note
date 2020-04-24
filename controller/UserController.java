@@ -46,7 +46,8 @@ public class UserController {
         UserView login = new UserView();
         String email = login.enterEmail();
         for (int i=0; i<userCounter(userlist); i++) {
-            if (userlist[i].getEmail().equals(email)) {
+            // temporary fast login by "1" for testing
+            if (userlist[i].getEmail().equals(email) || email.equals("1")) {
                 return true;
             }
         }
