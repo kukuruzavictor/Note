@@ -3,6 +3,7 @@ package ua.cluster.controller;
 import ua.cluster.model.Note;
 import ua.cluster.view.NoteView;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class NoteController {
@@ -78,7 +79,8 @@ public class NoteController {
                 String replace = view.requestNewNote();
                 note[index-1].setNote(replace);
                 Date date = new Date();
-                note [index-1].setDate(date.toString());
+                SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy hh:mm:ss");
+                note [index-1].setDate(dateFormat.format(date));
                 view.printSingleNote(note[index-1], index-1);
                 view.printSuccess();
             } else {
@@ -111,7 +113,8 @@ public class NoteController {
         newNoteObj.setChecked(view.requestChecked());
         newNoteObj.setLabel(view.requestLabel());
         Date date = new Date();
-        newNoteObj.setDate(date.toString());
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy hh:mm:ss");
+        newNoteObj.setDate(dateFormat.format(date));
         note[noteCounter(note)] = newNoteObj;
         view.printSingleNote(note[noteCounter(note)-1], noteCounter(note)-1);
         view.printSuccess();
